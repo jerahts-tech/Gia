@@ -1,4 +1,4 @@
-# assignment-review · 完整性校验清单（v2.5.0）
+# assignment-review · 完整性校验清单（v2.6.0）
 
 下载后请核对下列 9 份文件的存在性与 MD5，确认文件完整、未被改动。
 
@@ -6,12 +6,12 @@
 
 | # | 相对路径 | 字节数 | MD5 |
 |---|---|---|---|
-| 1 | `SKILL.md` | 54170 | `c9003d53626c40f7736c91084993fb9e` |
-| 2 | `weeks/week1.md` | 11734 | `0c55998997861caea6db4ec2bda8c106` |
+| 1 | `SKILL.md` | 55110 | `168d6fe567e0c97ca679fc5669effe9d` |
+| 2 | `weeks/week1.md` | 12026 | `cde89dc93455b1f1f01ee9c1384491ae` |
 | 3 | `weeks/week2.md` | 10423 | `327cb2ddbe017e7e6f0495a77ff34ef7` |
 | 4 | `weeks/week3.md` | 16236 | `db1e4b2ccc73e979e248a9603cc7eb1d` |
 | 5 | `weeks/week4.md` | 12749 | `98d06239a97a6844bc8c717651be8d36` |
-| 6 | `samples/Week1-示例小组-评价报告.html` | 26370 | `0a2eef0abef3cfa946b9720cd647354b` |
+| 6 | `samples/Week1-示例小组-评价报告.html` | 26354 | `6c53c5a3566475193821b7ea34fcdf1f` |
 | 7 | `samples/Week2-示例小组-评价报告.html` | 23391 | `6b38178c6a96846afd4dd6145acda5a6` |
 | 8 | `samples/Week3-示例小组-评价报告.html` | 29531 | `17a476237557298df4bf77690db315da` |
 | 9 | `samples/Week4-示例小组-评价报告.html` | 21493 | `1b318cb244da5a155439cf29e01cef47` |
@@ -31,6 +31,11 @@ Get-FileHash SKILL.md, weeks\*.md, samples\*.html -Algorithm MD5 | Format-Table 
 - 统一阈值：**每周总分 ≥ 75 且无任何维度为 E 档** 视为合格/达到提交标准；否则「暂不建议提交」。
 - v2.5.0 之前为分周阈值（Week1 ≥75 / Week2 ≥60 / Week3 ≥70 / Week4 ≥75），本版起统一为 75 分。
 - 四周样例按统一阈值复核：Week1 78 / Week2 69 / Week3 78 / Week4 82；Week2（69）未达线，报告判定卡已标注「⛔ 暂不建议提交」。
+
+## Week 1 材料口径（v2.6.0 起）
+
+- Week1 固定作业改为 **仅 PRD（含客户需求澄清）**——不再单独提交「客户需求沟通文档」作为必交材料/输入门槛。
+- 客户是谁、核心诉求、需求澄清结论（采纳/调整/不做）**必须写在 PRD 内**，作为需求理解基准；评价由「对照外部沟通文档」改为「核对 PRD 内嵌需求澄清是否完整、忠实」。
 
 ## 脱敏说明
 

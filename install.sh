@@ -28,6 +28,10 @@ else
   git clone --depth 1 "$REPO_URL" "$TARGET"
 fi
 
+# 读取安装到的版本号（从 SKILL.md frontmatter 的 version 字段）
+VERSION=$(grep -m1 '^  version:' "$TARGET/SKILL.md" 2>/dev/null | awk '{print $2}' | tr -d '"' || true)
+
 echo ""
-echo "✓ 完成。新开一个会话，输入 /assignment-review 即可触发。"
+echo "✓ 完成。已安装 assignment-review v${VERSION:-未知}。"
+echo "  新开一个会话，输入 /assignment-review 即可触发。"
 echo "  触发后先回答：① 周次（Week1–4）② 评价模式 ③ 三份材料清单。"
