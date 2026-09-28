@@ -34,7 +34,27 @@ assignment-review/
 
 > 样例报告均已脱敏（统一使用「示例小组」占位），内容完全自包含（内联 CSS，无外链、无图片、无脚本），双击即可离线打开。
 
-## 安装（3 步）
+## 一键安装（推荐）
+
+一行命令，自动 clone 到正确的 skills 目录并命名 `assignment-review`：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/jerahts-tech/Gia/main/install.sh | bash
+```
+
+或直接用 git clone（把目标目录写成 `assignment-review` 即可，仓库名 Gia 不影响）：
+
+```bash
+# Claude Code
+git clone https://github.com/jerahts-tech/Gia.git ~/.claude/skills/assignment-review
+
+# WorkBuddy / CodeBuddy
+git clone https://github.com/jerahts-tech/Gia.git ~/.workbuddy/skills/assignment-review
+```
+
+安装后**新开一个会话**即生效。
+
+## 安装（手动 3 步）
 
 1. 下载本仓库全部文件；
 2. 保持目录名 `assignment-review` 不变，放入你的 skills 目录：

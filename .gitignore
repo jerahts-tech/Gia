@@ -1,0 +1,9 @@
+# 系统/编辑器
+.DS_Store
+Thumbs.db
+*.log
+
+# 本地维护基地与临时文件（若日后放入仓库目录）
+/迁移-assignment-review/
+/安装报告-assignment-review.md
+/share-week1/
