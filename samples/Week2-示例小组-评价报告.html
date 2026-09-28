@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week2 MVP 评价报告 · 示例小组</title>
+<style>
+:root {
+  --primary: #3b5bdb; --primary-light: #edf2ff; --bg: #f5f6fa; --card: #fff;
+  --text: #1f2430; --text-secondary: #5b6472; --border: #e4e7ee;
+  --a: #0ca678; --a-bg: #e6fcf5; --b: #3b82f6; --b-bg: #e7f1ff;
+  --c: #f59f00; --c-bg: #fff4e0; --d: #f76707; --d-bg: #ffe9dd; --e: #e03131; --e-bg: #ffe3e3;
+  --pros: #0ca678; --pros-bg: #e6fcf5; --cons: #e03131; --cons-bg: #fff0f0;
+  --warn: #f59f00; --warn-bg: #fff8e1; --warn-border: #f59f00;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.6; padding:32px 16px; }
+.container { max-width:1120px; margin:0 auto; }
+header { background:var(--card); border-radius:14px; padding:28px 32px; margin-bottom:20px; border:1px solid var(--border); }
+header h1 { font-size:22px; margin-bottom:16px; color:var(--primary); }
+.meta { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px 24px; font-size:14px; color:var(--text-secondary); }
+.meta span b { color:var(--text); font-weight:600; }
+.warn-box { background:var(--warn-bg); border-left:4px solid var(--warn-border); border-radius:8px; padding:14px 20px; margin-bottom:20px; font-size:14px; }
+.warn-box b { color:var(--warn); }
+.warn-box ul { margin-top:6px; padding-left:22px; font-size:13px; color:var(--text); }
+.warn-box li { margin-bottom:4px; }
+.score-card { background:var(--card); border-radius:14px; padding:24px 32px; margin-bottom:20px; border:1px solid var(--border); }
+.score-header { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:18px; }
+.score-header h2 { font-size:17px; }
+.total-score { display:flex; align-items:center; gap:18px; flex-wrap:wrap; background:var(--primary-light); border-radius:12px; padding:16px 24px; margin-bottom:18px; }
+.total-score .big { font-size:40px; font-weight:800; color:var(--primary); }
+.total-score .big small { font-size:16px; font-weight:400; color:var(--text-secondary); }
+.total-score .grade-badge { display:inline-block; padding:4px 14px; border-radius:999px; font-size:14px; font-weight:700; background:var(--c-bg); color:var(--c); }
+.total-score .sub { font-size:13px; color:var(--text-secondary); margin-top:6px; }
+.total-big { font-size:34px; font-weight:700; color:var(--primary); }
+.total-big small { font-size:16px; font-weight:400; color:var(--text-secondary); }
+.grade-badge { display:inline-block; padding:4px 14px; border-radius:999px; font-size:13px; font-weight:600; background:var(--c-bg); color:var(--c); }
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:13px; min-width:960px; }
+thead th { background:var(--primary-light); color:var(--primary); text-align:left; padding:10px 12px; font-weight:600; white-space:nowrap; border-bottom:2px solid var(--primary); }
+tbody td { padding:14px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+.dim { font-weight:600; white-space:nowrap; min-width:130px; }
+.score-cell { min-width:90px; }
+.score-num { font-weight:700; font-size:15px; text-align:center; }
+.score-bar { height:6px; background:#edf0f5; border-radius:3px; margin-top:6px; overflow:hidden; }
+.score-bar i { display:block; height:100%; border-radius:3px; background:var(--primary); }
+.g { white-space:nowrap; text-align:center; }
+.tag { display:inline-block; min-width:26px; text-align:center; padding:2px 8px; border-radius:6px; font-size:12px; font-weight:700; color:#fff; }
+.tag-A { background:var(--a); } .tag-B { background:var(--b); } .tag-C { background:var(--c); } .tag-D { background:var(--d); } .tag-E { background:var(--e); }
+.conclusion { min-width:320px; }
+.pros, .cons { padding:10px 12px; border-radius:8px; margin-bottom:8px; }
+.pros { background:var(--pros-bg); border-left:3px solid var(--pros); }
+.cons { background:var(--cons-bg); border-left:3px solid var(--cons); }
+.pros:last-child, .cons:last-child { margin-bottom:0; }
+.pros .t, .cons .t { font-weight:700; font-size:12px; margin-bottom:6px; }
+.pros .t { color:var(--pros); } .cons .t { color:var(--cons); }
+.pros ol, .cons ol, .evid { padding-left:18px; margin:0; }
+.pros li, .cons li, .evid li { font-size:12.5px; margin-bottom:4px; }
+.evid { color:var(--text-secondary); }
+.total-row td { padding:12px; font-weight:700; font-size:14px; background:var(--primary-light); border-top:2px solid var(--primary); }
+.maturity { background:var(--card); border-left:4px solid var(--primary); border-radius:8px; padding:14px 20px; margin-bottom:20px; font-size:14px; }
+.maturity b { color:var(--primary); }
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-bottom:20px; }
+.card { background:var(--card); border-radius:12px; padding:20px; border:1px solid var(--border); }
+.card h3 { font-size:14px; margin-bottom:10px; }
+.card p { font-size:13px; color:var(--text-secondary); }
+.section { background:var(--card); border-radius:14px; padding:24px 32px; margin-bottom:20px; border:1px solid var(--border); }
+.section h2 { font-size:17px; margin-bottom:16px; color:var(--primary); }
+.next ol { padding-left:22px; }
+.next li { margin-bottom:8px; font-size:14px; }
+.verdict-pass { background:var(--a-bg); border:1.5px solid var(--a); color:var(--a); border-radius:10px; padding:14px 18px; margin-bottom:20px; font-size:15px; font-weight:700; }
+.verdict-pass .rule { font-weight:400; font-size:13px; color:var(--text); margin-top:4px; }
+.verdict-fail { background:var(--e-bg); border:1.5px solid var(--e); color:var(--e); border-radius:10px; padding:14px 18px; margin-bottom:20px; font-size:15px; font-weight:700; }
+.verdict-fail .rule { font-weight:400; font-size:13px; color:var(--text); margin-top:4px; }
+.diff-table { width:100%; border-collapse:collapse; font-size:13px; }
+.diff-table th { background:#eff6ff; padding:9px 10px; text-align:left; border-bottom:2px solid var(--primary); }
+.diff-table td { padding:10px; border-bottom:1px solid var(--border); vertical-align:top; }
+@media (max-width:768px) { .cards { grid-template-columns:1fr; } .total-big { font-size:28px; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Week 2 · 按规则实现（MVP）评价报告</h1>
+  <div class="meta">
+    <span><b>评价对象</b>：示例小组 小队 · 公益组织活动官网（官网项目）</span>
+    <span><b>评价周次</b>：Week 2 · 按规则实现（MVP）</span>
+    <span><b>批改人</b>：assignment-review skill v2.2.0（WorkBuddy Agent 执行 · 助教复核确认）</span>
+    <span><b>调用模式</b>：助教复核 · v2.2.0 口径重评样例</span>
+    <span><b>评价材料</b>：MVP 产品（历史版本快照 archive/5-10）+ Week 1 PRD 对照基准（V2.0）+ 可选增强材料（UI 文档、Coze 过程记录，作正向佐证）</span>
+    <span><b>评价规则</b>：weeks/week2.md v2.2.0 评分卡（6 维单材料实测导向）；提交标准 = 总分 ≥ 75 且无 E 档（统一阈值，v2.5.0 起）</span>
+  </div>
+</header>
+
+<div class="warn-box">
+  <b>材料核对与实测时效说明</b>
+  <ul>
+    <li><b>已收到</b>：MVP 产品（历史版本快照 archive/5-10，v2.0.0 起唯一必交材料）✓；Week 1 PRD 基准（项目空间历史材料直接读取）✓。</li>
+    <li><b>实测时效</b>：原评价时点（2026-05）快照 7 个核心页面实测全部 HTTP 200；本次重评复访该地址返回 HTTP 500（开发站点已失效）。本报告实测证据取自原评价时点记录并如实标注，不臆测当前产品状态。</li>
+    <li><b>口径说明</b>：v2.0.0 起实现规则文档、Test Checklist、过程对话不再是 Week 2 必交材料，<b>缺失不扣分</b>；本样本的 Coze 过程记录与 UI 文档按「可选增强材料」作为正向佐证写入证据列。</li>
+  </ul>
+</div>
+
+<div class="score-card">
+  <div class="score-header"><h2>一、评分表</h2></div>
+  <div class="total-score">
+    <div class="big">69<small> / 100</small></div>
+    <div>
+      <span class="grade-badge">C 合格</span>
+      <div class="sub">六维合计 · 最低档 C（无 E 档）· ⛔ 暂不建议提交（69 < 75 未达线）</div>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>评价维度</th><th>得分</th><th>档位</th><th>评价结论</th><th>证据</th><th>主要扣分原因</th><th>改进建议</th></tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td class="dim">1. MVP 与需求对齐<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 20</span></td>
+          <td class="score-cell"><div class="score-num">15<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/20</span></div><div class="score-bar"><i style="width:75%;"></i></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>PRD 的 P0 核心功能（展示 + 4 类报名 + 管理后台）对应页面在 MVP 中全部存在且渲染正常，7 个核心页面原评价时点实测 HTTP 200</li><li>范围与 Week 1 PRD 的 MVP 边界一致：未混入 PRD 标为「不做」的功能（票务/支付/会员体系均无）</li><li>管理后台含四类报名数据汇总，与 PRD「4.2.3 自动化」对应</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>静态快照只能验证页面存在与渲染，「真实可用」的交互层无法验证</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>快照实测（原评价时点）：首页 + 演讲视频 + 活动日程 + FAQ + 合作伙伴 + 关于 + 管理后台全部 HTTP 200</li><li>Week 1 PRD「三、功能清单」P0/P1/P2 与「本期不做范围」</li><li>管理后台快照：数据总览 + 讲者/志愿者/观众/合作伙伴四类报名数据汇总</li></ol></td>
+          <td>范围对齐已验证，交互可用性未验证（B 下界）</td>
+          <td>提供可交互环境（正式部署或稳定预览）供评审实测核心功能</td>
+        </tr>
+
+        <tr>
+          <td class="dim">2. 核心任务闭环完整性<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 20</span></td>
+          <td class="score-cell"><div class="score-num">13<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/20</span></div><div class="score-bar"><i style="width:65%;"></i></div></td>
+          <td class="g"><span class="tag tag-C">C</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>核心闭环的界面层完整：报名表单、提交成功页、后台数据查看的页面齐备</li><li>Coze 过程记录（正向佐证）显示实现链路存在：报名提交、数据入库、后台管理均有对应提交</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>静态快照无法实测走通「填表 → 提交 → 入库 → 后台展示」完整闭环，核心任务的端到端可用性缺实测证据</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>快照报名页与提交成功页结构</li><li>Coze commit（正向佐证）：05-08 完成官网全栈开发，报名系统 + 数据同步</li><li>缺：报名提交后的端到端实测记录</li></ol></td>
+          <td>闭环关键环节（提交→入库→展示）不可实测，谨慎降档</td>
+          <td>补一次核心闭环的完整实录（屏幕录制或分步测试记录）</td>
+        </tr>
+
+        <tr>
+          <td class="dim">3. 交互与状态质量<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 20</span></td>
+          <td class="score-cell"><div class="score-num">15<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/20</span></div><div class="score-bar"><i style="width:75%;"></i></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>信息架构清晰：首页 Hero 主题 + 7 项导航 + 页脚（社媒渠道 / 联系邮箱 / 备案）完整，无需解释即可理解页面结构</li><li>UI 文档（正向佐证）页面清单与导航结构完整，与快照实测一致</li><li>v2.0.0 起不对照 UI 原型打分，页面结构以实测体验为标准：渲染完整、层级清楚</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>Loading / Empty / Error 状态在静态快照中不可验证</li><li>操作反馈（点击响应、提交反馈）无法实测</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>快照首页实测：Hero「Speak as a World Citizen」+ 7 项导航 + 完整页脚</li><li>快照演讲视频页：视频墙 + 人物故事卡片渲染正常</li><li>UI 文档（正向佐证）：含「提交成功页」「数据入库」等状态设计</li></ol></td>
+          <td>状态完整性与操作反馈不可验证（B 下界）</td>
+          <td>在可交互环境中补关键状态（提交中/失败/空数据）的实测确认</td>
+        </tr>
+
+        <tr>
+          <td class="dim">4. 数据与 AI 实际表现<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 15</span></td>
+          <td class="score-cell"><div class="score-num">9<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/15</span></div><div class="score-bar"><i style="width:60%;"></i></div></td>
+          <td class="g"><span class="tag tag-C">C</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>Coze 过程记录（正向佐证）显示数据能力实现：DEV/PROD 数据同步、报名数据管理/导出/筛选</li><li>有外部能力接入记录：短信验证码服务</li><li>后台页面存在数据总览，与数据能力互证</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>「数据刷新/重进仍在」的真实持久化无法在静态快照实测</li><li>AI/外部能力调用的输出稳定性与失败兜底无实测证据</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>Coze commit（正向佐证）：数据同步 DEV/PROD；报名数据管理选中导出/刷新/状态下拉</li><li>Coze commit：接入短信服务发送验证码</li><li>快照管理后台 dashboard HTTP 200</li></ol></td>
+          <td>持久化与 AI 表现缺实测证据，按材料可得性谨慎给分（C 下界）</td>
+          <td>补数据持久化实测（提交 → 刷新 → 复查）与外部能力调用记录</td>
+        </tr>
+
+        <tr>
+          <td class="dim">5. 异常与边界处理<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 15</span></td>
+          <td class="score-cell"><div class="score-num">9<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/15</span></div><div class="score-bar"><i style="width:60%;"></i></div></td>
+          <td class="g"><span class="tag tag-C">C</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>Coze 过程记录（正向佐证）显示异常修复活跃：500 错误、上传失败、视频时长校验等均有修复提交</li><li>有权限校验、导航折叠、外部点击收起等边界处理记录</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>空输入、错误格式、重复提交、网络失败等异常路径无法在静态快照实测，异常处理的「可恢复性」未获证据</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>Coze commit（正向佐证）：修复 page.tsx 语法错误导致 500；后台多项 Bug 修复</li><li>Coze commit：管理后台安全加固 + 权限校验</li></ol></td>
+          <td>异常路径不可实测，谨慎给分（C 下界）</td>
+          <td>补异常路径实测记录（空表单/错误格式/重复提交各一组）</td>
+        </tr>
+
+        <tr>
+          <td class="dim">6. 提交就绪度<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 10</span></td>
+          <td class="score-cell"><div class="score-num">8<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/10</span></div><div class="score-bar"><i style="width:80%;"></i></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>产品有可公开访问地址（快照 URL 原评价时点可直接打开）</li><li>Coze 过程记录完整（76 次带截图提交），实现过程可追溯</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>无 MVP 范围与已知问题的随附说明（Week 2 作业仅产品本身）</li><li>本次重评复访地址已失效（HTTP 500），评审当前无法直接打开产品</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>快照 URL（原评价时点 7 页面 200）</li><li>本次复访记录：HTTP 500</li><li>无随附范围/已知问题说明</li></ol></td>
+          <td>自述缺失 + 地址时效失效（原评价时点可访问，判 B）</td>
+          <td>改用正式部署地址并在作业中附 MVP 范围与已知问题简述</td>
+        </tr>
+
+        <tr class="total-row">
+          <td>合计</td>
+          <td class="score-cell"><div class="score-num">69<span style="font-size:12px;font-weight:400;">/100</span></div></td>
+          <td class="g"><span class="tag tag-C">C</span></td>
+          <td colspan="4"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="verdict-fail">
+  ⛔ 暂不建议提交
+  <div class="rule">判定规则：总分 ≥ 75 且无任何维度为 E 档。本卷总分 69 &lt; 75，未达线；六维最低为 C 档（无 E 档，仅受总分阈值拦截）。自 v2.5.0 起提交标准由分周阈值统一为 75 分，本卷在旧阈值（Week2 ≥ 60）下原判定达标，现行标准下不再达标。提交前建议优先补齐「下一阶段 3 件事」第 1 件（可交互环境的可用性证据）以提分过线。</div>
+</div>
+
+<div class="maturity">
+  <b>阶段成熟度：</b>产品实现层完整，官网全栈 + 4 类报名 + 管理后台的页面结构与范围对齐均可验证。但静态快照把验证锁死在界面层：核心闭环、数据持久化、异常路径均缺实测证据。与 v1.3.0 口径（72 / C，扣「规则文档缺失」）相比，v2.2.0 口径下文档缺失不再扣分，扣分结构转向「实测受限」，评价重心随材料精简落到产品实际行为上。
+</div>
+
+<div class="cards">
+  <div class="card"><h3>最大亮点</h3><p>MVP 范围与 Week 1 PRD 边界严格对齐：P0 功能页面全部落地、无「不做」功能混入，76 次过程提交可追溯，范围纪律是本卷最扎实的部分。</p></div>
+  <div class="card"><h3>最大问题</h3><p>核心闭环与数据持久化缺实测证据：静态快照只能证明「页面在」，无法证明「真的能用」，核心任务闭环、数据与 AI 实际表现、异常与边界处理三个维度的判定都受限于证据可得性。</p></div>
+  <div class="card"><h3>最大工程风险</h3><p>开发快照已失效（复访 HTTP 500）且无正式部署地址：Week 3 迭代对比基线（Week 2 MVP）将不可获取，迭代效果评价只能靠间接证据还原。</p></div>
+</div>
+
+<div class="section">
+  <h2>MVP 产品实测记录（历史版本快照 · 原评价时点）</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>页面</th><th>快照地址</th><th>原评价时点实测</th><th>本次复访</th></tr></thead>
+      <tbody>
+        <tr><td>首页</td><td>archive/5-10/</td><td>HTTP 200，Hero「Speak as a World Citizen」+ 7 项导航</td><td rowspan="7" style="vertical-align:middle;">HTTP 500（开发站点已失效，按原评价时点记录评价并标注）</td></tr>
+        <tr><td>演讲视频</td><td>archive/5-10/speeches</td><td>HTTP 200，演讲视频墙 + 人物故事卡片</td></tr>
+        <tr><td>活动日程</td><td>archive/5-10/events</td><td>HTTP 200</td></tr>
+        <tr><td>常见问答</td><td>archive/5-10/faq</td><td>HTTP 200</td></tr>
+        <tr><td>合作伙伴</td><td>archive/5-10/partners</td><td>HTTP 200</td></tr>
+        <tr><td>关于我们</td><td>archive/5-10/about</td><td>HTTP 200</td></tr>
+        <tr><td>管理后台</td><td>archive/5-10/admin/dashboard</td><td>HTTP 200，数据总览 + 四类报名数据汇总</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13px;color:var(--text-secondary);margin-top:10px;">根地址：开发环境历史快照（archive/5-10，5.12 版本同结构）；本次重评时点该地址已失效，证据时效以原评价时点为准。</p>
+</div>
+
+<div class="section next">
+  <h2>四、下一阶段最优先改进的 3 件事</h2>
+  <ol>
+    <li><strong>改用正式部署地址</strong>：开发快照已失效，评审无法复访；Week 3 迭代对比也需要稳定的 Week 2 基线地址或存档。</li>
+    <li><strong>补核心闭环可用性实录</strong>：报名提交 → 数据入库 → 后台展示的完整实录（屏幕录制或分步测试记录），补齐核心闭环与数据持久化两个维度缺失的实测证据。</li>
+    <li><strong>随作业附 MVP 范围与已知问题简述</strong>：让评审无需还原过程即可了解交付范围与已知限制。</li>
+  </ol>
+</div>
+
+<div class="section">
+  <h2>五、口径演进对照（v1.3.0 原评 72 → v2.2.0 重评 69）</h2>
+  <div class="table-wrap">
+    <table class="diff-table">
+      <thead><tr><th style="width:150px">维度</th><th style="width:150px">v1.3.0（2026-08 原评 · 7 维）</th><th style="width:150px">v2.2.0 重评（6 维）</th><th>差异原因</th></tr></thead>
+      <tbody>
+        <tr><td>总分</td><td>72 / C</td><td><b>69 / C</b></td><td>分数接近但扣分结构完全不同：扣分主体从「文档缺失」转为「实测受限」，非小组表现变化（同一份 MVP）。</td></tr>
+        <tr><td>扣分主体</td><td>实现规则文档未创建、Test Checklist 缺失、规则散落过程记录（功能实现 C / 数据规则 C / 规则一致性 D 4/10）</td><td>闭环不可实测（13/C）、持久化与 AI 不可实测（9/C）、异常路径不可实测（9/C）</td><td>v2.0.0 起过程文档不再是必交材料、缺失不扣分，评价重心转向产品实际行为；原扣分项在新口径下移除。</td></tr>
+        <tr><td>强项复现</td><td>MVP 范围聚焦、页面层完整、过程证据完整</td><td class="same">范围对齐 15/B、页面结构 15/B、提交就绪度 8/B</td><td>范围纪律与页面完成度两处强项在新口径下复现。</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

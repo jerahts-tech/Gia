@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week1 需求定义评价报告 · 示例小组</title>
+<style>
+:root {
+  --primary: #3b5bdb; --primary-light: #edf2ff; --bg: #f5f6fa; --card: #fff;
+  --text: #1f2430; --text-secondary: #5b6472; --border: #e4e7ee;
+  --a: #0ca678; --a-bg: #e6fcf5; --b: #3b82f6; --b-bg: #e7f1ff;
+  --c: #f59f00; --c-bg: #fff4e0; --d: #f76707; --d-bg: #ffe9dd; --e: #e03131; --e-bg: #ffe3e3;
+  --pros: #0ca678; --pros-bg: #e6fcf5; --cons: #e03131; --cons-bg: #fff0f0;
+  --warn: #f59f00; --warn-bg: #fff8e1; --warn-border: #f59f00;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.6; padding:32px 16px; }
+.container { max-width:1120px; margin:0 auto; }
+header { background:var(--card); border-radius:14px; padding:28px 32px; margin-bottom:20px; border:1px solid var(--border); }
+header h1 { font-size:22px; margin-bottom:10px; color:var(--primary); }
+.header-sub { font-size:13px; color:var(--text-secondary); margin-bottom:16px; }
+.meta { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px 24px; font-size:14px; color:var(--text-secondary); }
+.meta span b { color:var(--text); font-weight:600; }
+.rerun-note { background:var(--primary-light); border:1px solid #93c5fd; border-radius:10px; padding:12px 16px; font-size:13.5px; margin-bottom:20px; color:var(--text); }
+.score-card { background:var(--card); border-radius:14px; padding:24px 32px; margin-bottom:20px; border:1px solid var(--border); }
+.score-header { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:18px; }
+.score-header h2 { font-size:17px; }
+.total-score { display:flex; align-items:center; gap:18px; flex-wrap:wrap; background:var(--primary-light); border-radius:12px; padding:16px 24px; margin-bottom:18px; }
+.total-score .big { font-size:40px; font-weight:800; color:var(--primary); }
+.total-score .big small { font-size:16px; font-weight:400; color:var(--text-secondary); }
+.total-score .grade-badge { display:inline-block; padding:4px 14px; border-radius:999px; font-size:14px; font-weight:700; background:var(--b-bg); color:var(--b); }
+.total-score .sub { font-size:13px; color:var(--text-secondary); margin-top:6px; }
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:13px; min-width:960px; }
+thead th { background:var(--primary-light); color:var(--primary); text-align:left; padding:10px 12px; font-weight:600; white-space:nowrap; border-bottom:2px solid var(--primary); }
+tbody td { padding:14px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+.dim { font-weight:600; white-space:nowrap; min-width:130px; }
+.score-cell { min-width:90px; }
+.score-num { font-weight:700; font-size:15px; text-align:center; }
+.score-bar { height:6px; background:#edf0f5; border-radius:3px; margin-top:6px; overflow:hidden; }
+.score-bar i { display:block; height:100%; border-radius:3px; background:var(--primary); }
+.g { white-space:nowrap; text-align:center; }
+.tag { display:inline-block; min-width:26px; text-align:center; padding:2px 8px; border-radius:6px; font-size:12px; font-weight:700; color:#fff; }
+.tag-A { background:var(--a); } .tag-B { background:var(--b); } .tag-C { background:var(--c); } .tag-D { background:var(--d); } .tag-E { background:var(--e); }
+.conclusion { min-width:320px; }
+.pros, .cons { padding:10px 12px; border-radius:8px; margin-bottom:8px; }
+.pros { background:var(--pros-bg); border-left:3px solid var(--pros); }
+.cons { background:var(--cons-bg); border-left:3px solid var(--cons); }
+.pros:last-child, .cons:last-child { margin-bottom:0; }
+.pros .t, .cons .t { font-weight:700; font-size:12px; margin-bottom:6px; }
+.pros .t { color:var(--pros); } .cons .t { color:var(--cons); }
+.pros ol, .cons ol, .evid, .deduct ol { padding-left:18px; margin:0; }
+.pros li, .cons li, .evid li, .deduct li { font-size:12.5px; margin-bottom:4px; }
+.evid { color:var(--text-secondary); }
+.total-row td { padding:12px; font-weight:700; font-size:14px; background:var(--primary-light); border-top:2px solid var(--primary); }
+.verdict-pass { background:var(--a-bg); border:1.5px solid var(--a); color:var(--a); border-radius:10px; padding:14px 18px; margin-bottom:20px; font-size:15px; font-weight:700; }
+.verdict-pass .rule { font-weight:400; font-size:13px; color:var(--text); margin-top:4px; }
+.maturity { background:var(--card); border-left:4px solid var(--primary); border-radius:8px; padding:14px 20px; margin-bottom:20px; font-size:14px; }
+.maturity b { color:var(--primary); }
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-bottom:20px; }
+.card { background:var(--card); border-radius:12px; padding:20px; border:1px solid var(--border); }
+.card h3 { font-size:14px; margin-bottom:10px; }
+.card p { font-size:13px; color:var(--text-secondary); }
+.section { background:var(--card); border-radius:14px; padding:24px 32px; margin-bottom:20px; border:1px solid var(--border); }
+.section h2 { font-size:17px; margin-bottom:16px; color:var(--primary); }
+.next ol { padding-left:22px; }
+.next li { margin-bottom:8px; font-size:14px; }
+.diff-table { width:100%; border-collapse:collapse; font-size:13px; }
+.diff-table th { background:#eff6ff; padding:9px 10px; text-align:left; border-bottom:2px solid var(--primary); }
+.diff-table td { padding:10px; border-bottom:1px solid var(--border); vertical-align:top; }
+.up { color:var(--cons); font-weight:700; }
+.same { color:var(--text-secondary); }
+.foot { margin-top:28px; color:var(--text-secondary); font-size:12.5px; text-align:center; }
+@media (max-width:768px) { .cards { grid-template-columns:1fr; } .total-score .big { font-size:30px; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Week 1 · 需求定义评价报告</h1>
+  <div class="header-sub">Vibe Coding 网页产品实战营 · 「Vibe Coding 四周产品评价」Skill · v2.2.0 口径样例</div>
+  <div class="meta">
+    <span><b>评价对象</b>：示例小组 · 公益组织活动官网（官网项目）</span>
+    <span><b>评价周次</b>：Week 1 · 需求定义（PRD，含客户需求澄清）</span>
+    <span><b>批改人</b>：assignment-review skill v2.2.0（WorkBuddy Agent 执行 · 助教复核确认）</span>
+    <span><b>调用模式</b>：助教复核 · v2.2.0 口径重评样例（评分执行记录为 v2.0.1 运行，评分卡与 v2.2.0 现行一致）</span>
+    <span><b>评价材料</b>：PRD（V2.0，含客户需求澄清，docx 全文提取 691 段）；需求澄清来源：0426 需求对接转写（41 分钟）、0506 产品需求文档讨论转写、客户需求对接会议证据摘要（内嵌于 PRD 作澄清依据）</span>
+    <span><b>评价规则</b>：weeks/week1.md v2.6.0 评分卡（6 维，先判档后定分）；提交标准 = Week1 总分 ≥ 75 且无 E 档（统一阈值，v2.5.0 起）</span>
+    <span><b>版本口径说明</b>：PRD 为 V2.0「客户沟通后优化」版本，客户需求澄清内嵌于 PRD；0426/0506 两次会议有转写可核验，0508 与客户沟通内容无留痕，涉及该次沟通后的改动按 PRD 现文本评价并在相关维度标注。</span>
+  </div>
+</header>
+
+<div class="rerun-note">
+<b>口径说明：</b>本报告为示例小组 Week1 真实材料按现行评分卡重评的正式样例。评分执行于 assignment-review v2.0.1 运行（v2.0.1 → v2.2.0 评分规则未变化），提交判定已按 v2.5.0 统一阈值复核（78 ≥ 75，结论不变）。与 v1.3.0 原评（86 / B）的规则演进对照见第五节；v1.3.0 原评报告归档于 archive-v1.3.0-samples/。
+</div>
+
+<div class="score-card">
+  <div class="score-header"><h2>一、评分表</h2></div>
+  <div class="total-score">
+    <div class="big">78<small> / 100</small></div>
+    <div>
+      <span class="grade-badge">B 良好</span>
+      <div class="sub">六维合计 · 最低档 C（无 E 档）· ✅ 达到提交标准 · 先判档后定分核对：B 档得分率 75-89%（本卷 78%）一致。</div>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>评价维度</th><th>得分</th><th>档位</th><th>评价结论</th><th>证据</th><th>主要扣分原因</th><th>改进建议</th></tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td class="dim">1. 用户问题与场景<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 15</span></td>
+          <td class="score-cell"><div class="score-num">12<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/15</span></div><div class="score-bar"><i style="width:80%;"></i></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>用户分层明确：外部三类（公众/参与者/合作方）加内部运营，非笼统「用户」。</li><li>三个问题真实且还原客户原意，与 0426 沟通基准一致。</li><li>「数据统一沉淀，便于后续人工跟进」准确对应客户人工 approach 流程。</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>场景是功能视角，缺时间/上下文的具体用户情境。</li><li>问题只有清单没有现状：今天信息散在哪、现在怎么笨办法整理、影响多大，都没写。</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>PRD「二、用户与应用场景」外部/内部分类与两条核心场景。</li><li>PRD「一、背景及目标-解决什么问题」三条问题清单。</li><li>0426 转写 00:37:32 小组方：「这些信息会汇总到我们的 excel table……团队的小伙伴……去 approach 他们」。</li></ol></td>
+          <td class="deduct"><ol><li>问题深度停在清单级，缺发生条件、现有解决方式与具体影响，A 档要求未达。</li></ol></td>
+          <td>在「背景及目标」加一段现状与痛点：报名信息现在分散在哪几个渠道、人工整理一次的成本、漏跟进的实际后果。</td>
+        </tr>
+
+        <tr>
+          <td class="dim">2. 产品目标与需求逻辑<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 15</span></td>
+          <td class="score-cell"><div class="score-num">13<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/15</span></div><div class="score-bar"><i style="width:86.7%;"></i></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>问题→目标→功能链条整体成立，展示对应品牌分散、报名+汇总对应数据分散。</li><li>21 项功能均可回指目标，无顺手加的无关项；内容推荐、个性化分发被明确排除。</li><li>本期不做清单与客户「管理前期太 next step」口径方向一致。</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>「提升传播效果与报名转化效率」不可衡量，无基线无目标值。</li><li>登录+审批流+导出超出客户「excel 汇总即可、比较简单」的预期，超出部分依赖无留痕的 0508 沟通。</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>PRD「一、背景及目标-价值和目标」四条。</li><li>PRD「三、功能清单」四模块 P0/P1/P2 分布。</li><li>0426 转写 00:37:32 小组方：「这个管理我觉得在前期在网站上面去实现有点可能太 next step 了」；PRD 版本表 V2.0「客户沟通后优化文档 20260508」。</li></ol></td>
+          <td class="deduct"><ol><li>核心目标不可衡量。</li><li>超出 0426 客户口径的范围缺乏确认留痕（v2.0.1 新增检查点，与「MVP 范围与优先级」维度同根因跨维关联）。</li></ol></td>
+          <td>给目标配可验证指标（如四类报名全走网站表单、数据 5 分钟内可导出一份 Excel）；把 0508 客户确认结论补纪要或聊天记录进项目空间。</td>
+        </tr>
+
+        <tr>
+          <td class="dim">3. 核心功能设计<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 20</span></td>
+          <td class="score-cell"><div class="score-num">15<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/20</span></div><div class="score-bar"><i style="width:75%;"></i></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>报名主链路闭环完整：多入口→字段级表单→校验→提交成功→后台查看/筛选/导出/改状态，四类报名对称。</li><li>功能聚焦展示+申请+汇总+问答四块，与客户诉求一一对应。</li><li>细节落地程度高：成功页按钮去向、手机号脱敏格式、指标计算公式均已定义。</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>观众报名子链路断裂：表单内嵌支付区域且「需完成支付后提交」，与本期不做票务支付冲突，现有文本下走不通（与「可验收性与文档一致性」维度同根因跨维关联，本维主扣）。</li><li>问答只有骨架：FAQ 待收集、客服待补充、智能体待搭。</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>PRD「4.2.2 申请」四种表单字段与校验规则。</li><li>PRD「4.2.3 自动化」数据总览与四类报名数据管理。</li><li>PRD「4.2.2-观众报名」支付区域与「观众报名需完成支付后提交」vs「本期不做范围-在线票务、支付、发票与退款系统」；PRD「4.2.4 问答」两条「待」。</li></ol></td>
+          <td class="deduct"><ol><li>观众报名因支付矛盾在文本层面不可执行，闭环缺口。</li><li>问答模块有结构无内容。</li></ol></td>
+          <td>与客户确认观众报名走免费表单还是外链活动行，删除或改写支付区域；本周先填 5-10 条 FAQ。</td>
+        </tr>
+
+        <tr>
+          <td class="dim">4. 功能规则、交互与技术方案清晰度<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 15</span></td>
+          <td class="score-cell"><div class="score-num">10<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/15</span></div><div class="score-bar"><i style="width:66.7%;"></i></div></td>
+          <td class="g"><span class="tag tag-C">C</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>功能规则写到位：导航高亮、必填校验、失败文案、指标公式等输入/触发/处理/输出普遍明确。</li><li>页面结构与流转清晰：每页入口、按钮、跳转去向有交代，导航与页脚规则统一。</li><li>异常边界较好：通道关闭置灰、名额已满、图片超限、网络/服务异常均有处理。</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>技术方案整体缺失（v2.0.0 起并入本维度的重点项）：无前端栈、无数据存储方案、登录态未定义，「智能体搭建并嵌入该网站」仅一句。</li><li>浏览类关键状态缺失：搜索无结果、「我报名的」空状态、列表 Loading 均未定义。</li><li>视频承载方式挂在待办未决，直接影响演讲视频模块可行性。</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>PRD「4.2.1-首页/活动日程」导航与按钮跳转规则。</li><li>PRD「4.2.4-智能助手」原文「智能体搭建并嵌入该网站」；「六、6.2 内部待推进」技术侧仅四字「网站开发」。</li><li>PRD「六、6.1」视频上传方式（站内上传还是外链嵌入）待确认项。</li></ol></td>
+          <td class="deduct"><ol><li>技术栈与实现方式大面积缺失，选型与存储全靠开发自行拍板，PRD 尚不能完全指导动手（C 档「UI 或技术方案大面积缺失」命中）。</li></ol></td>
+          <td>补一页技术方案：前端框架与部署方式、报名数据存哪（表格工具或轻后端）、登录态实现、智能体平台与接入方式，每项 2-3 行即可。</td>
+        </tr>
+
+        <tr>
+          <td class="dim">5. MVP 范围与优先级<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 25</span></td>
+          <td class="score-cell"><div class="score-num">21<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/25</span></div><div class="score-bar"><i style="width:84%;"></i></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>P0/P1/P2 三级优先级覆盖 21 项功能，P0 集合构成「了解→报名→整理」最小价值闭环。</li><li>本期不做清单明确：会员体系/复杂后台/内容推荐/多地区/票务支付，与客户口径方向一致。</li><li>智能助手保留 P1 且 QA 降级意向登记在待确认清单，取舍过程透明。</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>「复杂后台不做」与「登录+审批流+导出进本期」界限未定义，简单/复杂的判断标准缺失（v2.0.1 新检查点）。</li><li>数据管理后台整体超出客户「excel 汇总、比较简单」预期一档，超出部分依赖无留痕的 0508 沟通（与「产品目标与需求逻辑」维度同根因跨维关联，本维不重复计支付矛盾）。</li><li>范围对 3-4 周志愿团队偏大：四套表单+完整后台+智能体，开发仅 1 人。</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>PRD「三、功能清单」优先级列与「本期建设范围/本期不做范围」。</li><li>0426 转写 00:37:32 小组方：「信息汇总到我们的 excel table……这个是比较简单的」「前期在网站上面去实现有点可能太 next step 了」。</li><li>PRD「六、6.1」12 项待客户确认（含是否沿用飞书问卷、筛选规则是否系统承载）。</li></ol></td>
+          <td class="deduct"><ol><li>MVP 边界在「后台」一处存在定义漏洞。</li><li>范围超出客户口径部分缺乏确认留痕。</li></ol></td>
+          <td>在「本期不做范围」补一句可操作定义（如不做多角色权限与复杂审批配置，仅做单一管理员登录+状态修改）；后台范围与客户书面确认后归档项目空间。</td>
+        </tr>
+
+        <tr>
+          <td class="dim">6. 可验收性与文档一致性<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 10</span></td>
+          <td class="score-cell"><div class="score-num">7<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/10</span></div><div class="score-bar"><i style="width:70%;"></i></div></td>
+          <td class="g"><span class="tag tag-C">C</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>可验证细节密度高：校验规则、状态枚举、计算公式、脱敏格式均可直接转验收用例。</li><li>版本管理规范：V1.0/V2.0 版本表含修订人与日期。</li><li>未决事项诚实标注：FAQ 待收集、客服待补充、12 项客户待确认集中列出。</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>观众报名表单无姓名字段，后台观众数据列表首列却是「姓名」，字段来源对不上。</li><li>合作伙伴表单出现「与 旧主体名 合作」，与项目主体 官网项目不符，模板残留。</li><li>登录页详述含立即注册/忘记密码/第三方登录，功能清单无对应项，且与不做会员体系冲突。</li><li>功能清单序号跳号（缺 4）、客服邮箱 tobespeekers 拼写（speakers）等小瑕疵。</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>PRD「4.2.2-观众报名」表单字段 vs「4.2.3-观众报名数据」列表字段。</li><li>PRD「4.2.2-合作伙伴报名」：「你希望以哪种方式与 旧主体名 合作？」。</li><li>PRD「4.2.3-登录」注册/忘记密码/第三方登录 vs「三、功能清单」无对应项。</li></ol></td>
+          <td class="deduct"><ol><li>四处内部不一致，其中两处为模板残留未清理，削弱 PRD 作为唯一开发依据的可信度（C 档）。</li></ol></td>
+          <td>出稿前做一致性自查：功能清单、需求详述、后台字段三方对表；全局搜索替换残留主体名（旧主体名→官网项目）。</td>
+        </tr>
+
+        <tr class="total-row">
+          <td>合计</td>
+          <td class="score-cell"><div class="score-num">78<span style="font-size:12px;font-weight:400;">/100</span></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td colspan="4"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="verdict-pass">
+  ✅ 达到提交标准，可正式提交
+  <div class="rule">判定规则：Week1 总分 ≥ 75 且无任何维度为 E 档。本卷总分 78 ≥ 75，六维最低为 C 档（功能规则与技术方案 10/15、可验收性与文档一致性 7/10），判定通过。提交前建议优先完成「下一阶段 3 件事」中的第 1 件（支付矛盾），它影响 Week2 开发能否照 PRD 动手。</div>
+</div>
+
+<div class="maturity">
+  <b>阶段成熟度：</b>需求理解与功能框架已成型，字段级规则扎实；技术方案空白与文档一致性缺陷是当前短板。
+</div>
+
+<div class="cards">
+  <div class="card"><h3>最大亮点</h3><p>四类报名表单字段级落地：从多入口、必填校验、失败文案到后台数据管理形成完整可开发链路，四类报名对称覆盖，这是全卷最能直接指导开发的部分。</p></div>
+  <div class="card"><h3>最大问题</h3><p>观众报名支付区域与「本期不做票务支付」直接矛盾，观众报名闭环在文本层面走不通；同类模板残留还有 3 处（观众无姓名字段、旧主体名 残留、登录注册详述无清单对应）。</p></div>
+  <div class="card"><h3>最大工程风险</h3><p>技术方案空白叠加开发仅 1 人：若 Week2 开工前仍不定前端栈、数据存储与智能体平台，四套表单加后台的工期必然失控，智能体大概率被临时砍掉且无预案。</p></div>
+</div>
+
+<div class="section next">
+  <h2>四、下一阶段最优先改进的 3 件事</h2>
+  <ol>
+    <li><strong>解决支付矛盾（Week2 开工前）</strong>：与客户确认观众报名走免费表单还是外链活动行，同步删除或改写 4.2.2 支付区域与支付相关失败分支。</li>
+    <li><strong>补技术方案一页</strong>：前端框架与部署、报名数据存哪、登录态实现、智能体平台与接入方式，逐条填掉技术方案维度的缺项，让开发可以照 PRD 动手。</li>
+    <li><strong>一致性自查</strong>：功能清单、需求详述、后台字段三方对表，清理 旧主体名 残留、补观众姓名字段或删后台姓名列、对齐登录/注册详述与功能清单。</li>
+  </ol>
+</div>
+
+<div class="section">
+  <h2>五、口径演进对照（v1.3.0 原评 86 → 现行评分卡 78）</h2>
+  <div class="table-wrap">
+    <table class="diff-table">
+      <thead>
+        <tr><th style="width:180px">维度</th><th style="width:120px">v1.3.0（2026-08-22 原评）</th><th style="width:120px">现行口径</th><th>差异原因</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>总分</td><td>86 / B</td><td><b>78 / B</b> <span class="up">↓8</span></td><td>新检查点命中 v1.3.0 未覆盖的缺陷类型，非小组表现变化（同一份 PRD）。</td></tr>
+        <tr><td>功能规则、交互与技术方案</td><td>技术栈为独立文档，Week1 不提交，不在 PRD 维度评分</td><td><b>10 / C</b></td><td>v2.0.0 起 UI/技术栈并入 PRD 评价：全文技术方案缺失在此口径下暴露，属规则口径变化带来的合理降分。</td></tr>
+        <tr><td>可验收性与文档一致性</td><td>抓到支付矛盾（范围自相矛盾）</td><td><b>7 / C</b></td><td>逐字段对照新发现 3 处：观众表单无姓名字段 vs 后台有姓名列、旧主体名 模板残留、登录注册详述与功能清单不一致。</td></tr>
+        <tr><td>MVP 范围与优先级</td><td>按做/不做清单与闭环评价</td><td><b>21 / B</b></td><td>v2.0.1 新增「优先级与客户预期一致」检查点：管理后台范围与客户 0426「excel 汇总即可」口径的差异被显式评价，并标注 0508 确认无留痕。</td></tr>
+        <tr><td>用户问题 / 目标逻辑 / 核心功能设计</td><td>B / B / B</td><td class="same">B 12 / B 13 / B 15</td><td>档位与 v1.3.0 结论一致，客户原意还原度与报名链路闭环两处强项得到复现。</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="rerun-note">
+<b>新检查点有效性结论：</b>v2.0.1 新检查点在本样本上全部有效命中：①技术栈并入暴露真实缺陷（此前不可见）；②逐字段对照发现 3 处 v1.3.0 未识别的模板残留；③客户预期一致性检查点命中范围超口径问题。重复扣分控制按规则执行：支付矛盾在「核心功能设计」扣「链路断裂」（主扣）、「可验收性与文档一致性」扣「文档不自洽」（关联视角）、「MVP 范围与优先级」未重复计。
+</div>
+
+<div class="foot">
+本报告由 assignment-review skill（v2.6.0 口径）生成 · 助教复核 · 评价对象：示例小组 Week 1<br>
+规则依据：weeks/week1.md（v2.6.0）· 客户需求澄清（PRD 内嵌）：0426 需求对接转写 + 客户需求对接会议证据摘要
+</div>
+
+</div>
+</body>
+</html>
