@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week3 反馈驱动迭代评价报告 · 示例小组</title>
+<style>
+:root {
+  --primary: #3b5bdb; --primary-light: #edf2ff; --bg: #f5f6fa; --card: #fff;
+  --text: #1f2430; --text-secondary: #5b6472; --border: #e4e7ee;
+  --a: #0ca678; --a-bg: #e6fcf5; --b: #3b82f6; --b-bg: #e7f1ff;
+  --c: #f59f00; --c-bg: #fff4e0; --d: #f76707; --d-bg: #ffe9dd; --e: #e03131; --e-bg: #ffe3e3;
+  --pros: #0ca678; --pros-bg: #e6fcf5; --cons: #e03131; --cons-bg: #fff0f0;
+  --warn: #f59f00; --warn-bg: #fff8e1; --warn-border: #f59f00;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.6; padding:32px 16px; }
+.container { max-width:1120px; margin:0 auto; }
+header { background:var(--card); border-radius:14px; padding:28px 32px; margin-bottom:20px; border:1px solid var(--border); }
+header h1 { font-size:22px; margin-bottom:16px; color:var(--primary); }
+.meta { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px 24px; font-size:14px; color:var(--text-secondary); }
+.meta span b { color:var(--text); font-weight:600; }
+.warn-box { background:var(--warn-bg); border-left:4px solid var(--warn-border); border-radius:8px; padding:14px 20px; margin-bottom:20px; font-size:14px; }
+.warn-box b { color:var(--warn); }
+.warn-box ul { margin-top:6px; padding-left:22px; font-size:13px; color:var(--text); }
+.warn-box li { margin-bottom:4px; }
+.score-card { background:var(--card); border-radius:14px; padding:24px 32px; margin-bottom:20px; border:1px solid var(--border); }
+.score-header h2 { font-size:17px; margin-bottom:14px; color:var(--primary); }
+.total-score { display:flex; align-items:center; gap:18px; flex-wrap:wrap; background:var(--primary-light); border-radius:12px; padding:16px 24px; margin-bottom:18px; }
+.total-score .big { font-size:40px; font-weight:800; color:var(--primary); }
+.total-score .big small { font-size:16px; font-weight:400; color:var(--text-secondary); }
+.total-score .grade-badge { display:inline-block; padding:4px 14px; border-radius:999px; font-size:14px; font-weight:700; background:var(--b-bg); color:var(--b); }
+.total-score .sub { font-size:13px; color:var(--text-secondary); margin-top:6px; }
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:13px; min-width:960px; }
+thead th { background:var(--primary-light); color:var(--primary); text-align:left; padding:10px 12px; font-weight:600; white-space:nowrap; border-bottom:2px solid var(--primary); }
+tbody td { padding:14px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+.dim { font-weight:600; white-space:nowrap; min-width:130px; }
+.score-cell { min-width:90px; }
+.score-num { font-weight:700; font-size:15px; text-align:center; }
+.score-bar { height:6px; background:#edf0f5; border-radius:3px; margin-top:6px; overflow:hidden; }
+.score-bar i { display:block; height:100%; border-radius:3px; background:var(--primary); }
+.g { white-space:nowrap; text-align:center; }
+.tag { display:inline-block; min-width:26px; text-align:center; padding:2px 8px; border-radius:6px; font-size:12px; font-weight:700; color:#fff; }
+.tag-A { background:var(--a); } .tag-B { background:var(--b); } .tag-C { background:var(--c); } .tag-D { background:var(--d); } .tag-E { background:var(--e); }
+.conclusion { min-width:320px; }
+.pros, .cons { padding:10px 12px; border-radius:8px; margin-bottom:8px; }
+.pros { background:var(--pros-bg); border-left:3px solid var(--pros); }
+.cons { background:var(--cons-bg); border-left:3px solid var(--cons); }
+.pros:last-child, .cons:last-child { margin-bottom:0; }
+.pros .t, .cons .t { font-weight:700; font-size:12px; margin-bottom:6px; }
+.pros .t { color:var(--pros); } .cons .t { color:var(--cons); }
+.pros ol, .cons ol, .evid { padding-left:18px; margin:0; }
+.pros li, .cons li, .evid li { font-size:12.5px; margin-bottom:4px; }
+.evid { color:var(--text-secondary); }
+.total-row td { padding:12px; font-weight:700; font-size:14px; background:var(--primary-light); border-top:2px solid var(--primary); }
+.verdict-pass { background:var(--a-bg); border:1.5px solid var(--a); color:var(--a); border-radius:10px; padding:14px 18px; margin-bottom:20px; font-size:15px; font-weight:700; }
+.verdict-pass .rule { font-weight:400; font-size:13px; color:var(--text); margin-top:4px; }
+.maturity { background:var(--card); border-left:4px solid var(--primary); border-radius:8px; padding:14px 20px; margin-bottom:20px; font-size:14px; }
+.maturity b { color:var(--primary); }
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-bottom:20px; }
+.card { background:var(--card); border-radius:12px; padding:20px; border:1px solid var(--border); }
+.card h3 { font-size:14px; margin-bottom:10px; }
+.card p { font-size:13px; color:var(--text-secondary); }
+.section { background:var(--card); border-radius:14px; padding:24px 32px; margin-bottom:20px; border:1px solid var(--border); }
+.section h2 { font-size:17px; margin-bottom:16px; color:var(--primary); }
+.stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; }
+.stat { background:var(--primary-light); border-radius:10px; padding:16px; text-align:center; }
+.stat .num { font-size:26px; font-weight:700; color:var(--primary); }
+.stat .label { font-size:12px; color:var(--text-secondary); }
+.next ol { padding-left:22px; }
+.next li { margin-bottom:8px; font-size:14px; }
+.diff-table { width:100%; border-collapse:collapse; font-size:13px; }
+.diff-table th { background:#eff6ff; padding:9px 10px; text-align:left; border-bottom:2px solid var(--primary); }
+.diff-table td { padding:10px; border-bottom:1px solid var(--border); vertical-align:top; }
+.same { color:var(--text-secondary); }
+@media (max-width:768px) { .cards { grid-template-columns:1fr; } .total-score .big { font-size:30px; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Week 3 · 反馈驱动迭代 + 文档版本管理评价报告</h1>
+  <div class="meta">
+    <span><b>评价对象</b>：示例小组 · 公益组织活动官网（官网项目）</span>
+    <span><b>评价周次</b>：Week 3 · 反馈驱动迭代 + 文档版本管理</span>
+    <span><b>批改人</b>：assignment-review skill v2.2.0（WorkBuddy Agent 执行 · 助教复核确认）</span>
+    <span><b>调用模式</b>：助教复核 · v2.2.0 口径重评样例</span>
+    <span><b>评价材料</b>：用户反馈 PDF（50 条，41 前端 + 9 管理台）+ Coze 开发对话（290 次带截图版本提交）+ 历史版本快照（5.10 / 5.12 / 5.19）</span>
+    <span><b>评价规则</b>：weeks/week3.md v2.2.0 评分卡（7 维，先判档后定分）；提交标准 = 总分 ≥ 75 且无 E 档（统一阈值，v2.5.0 起）</span>
+  </div>
+</header>
+
+<div class="warn-box">
+  <b>材料核对与口径说明</b>
+  <ul>
+    <li><b>已收到</b>：用户反馈 PDF（50 条，41 前端 + 9 管理台）✓；Coze 开发对话（290 次带截图版本提交）✓；历史版本快照（5.10 / 5.12 / 5.19）✓。</li>
+    <li><b>迭代 PRD 未提供</b>：按「必交材料缺失」处理，不臆测「修订已/未发生」。Coze 提交记录可佐证规则变更真实发生、DEMO 变化量大，因此相关维度按缺失证据四分法谨慎降档而非判 E，并在对应维度标注。</li>
+    <li><b>证据时效</b>：当周迭代版网页的线上版本已被最新版覆盖，「实际迭代效果」以 Coze 提交截图 + 历史快照作为证据源。</li>
+    <li><b>口径说明</b>：本报告为按现行评分卡重评的正式样例，与 v1.3.0 原评（80 / B）的规则演进对照见文末；v1.3.0 原评报告归档于 archive-v1.3.0-samples/。</li>
+  </ul>
+</div>
+
+<div class="score-card">
+  <div class="score-header"><h2>一、评分表</h2></div>
+  <div class="total-score">
+    <div class="big">78<small> / 100</small></div>
+    <div>
+      <span class="grade-badge">B 良好</span>
+      <div class="sub">七维合计 · 最低档 D（必交材料缺失谨慎降档，非产品缺陷）· 无 E 档 · ✅ 达到提交标准</div>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>评价维度</th><th>得分</th><th>档位</th><th>评价结论</th><th>证据</th><th>主要扣分原因</th><th>改进建议</th></tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td class="dim">1. 用户反馈质量<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 15</span></td>
+          <td class="score-cell"><div class="score-num">14<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/15</span></div><div class="score-bar"><i style="width:93%;"></i></div></td>
+          <td class="g"><span class="tag tag-A">A</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>50 条反馈来源真实多样（客户/群众/组内/外部用户），含使用场景</li><li>覆盖核心使用流程（首页/关于/视频/活动/问答/报名/管理台），不是只问感觉</li><li>Timeline 清晰（5.25-5.26 调整→5.27 测试→5.28 呈现），分工到人</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>部分反馈缺具体场景（只写「下面一大块白的」，没说设备/屏幕）</li><li>部分「已解决」标记无具体验证记录</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>PDF 50 条反馈按来源分：客户约 12 条、群众/外部约 8 条、组内 30 条</li><li>含具体使用位置（「关于我们-hero 区」「活动日程-即将到来」）</li></ol></td>
+          <td>部分反馈缺场景；已解决缺验证方式</td>
+          <td>补「反馈场景」列（设备/操作路径）；已解决补「验证方式」列</td>
+        </tr>
+
+        <tr>
+          <td class="dim">2. 问题识别与根因判断<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 15</span></td>
+          <td class="score-cell"><div class="score-num">13<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/15</span></div><div class="score-bar"><i style="width:87%;"></i></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>反馈表「板块」列做 5 类归纳（视觉/功能/研发/内容/无需优化）</li><li>部分反馈有根因（反馈 6「人物故事易忽略」→ 根因是用户不知道这板块）</li><li>Coze 对话含深层根因：视频无法播放定位到「S3 key + 签名 URL 跨环境失效」、CDN 缓存定位到「Date.now() 版本比对无效」</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>反馈表本身仍多停留在「现象」层面，多数「是」决策未写「为什么先改这个」</li><li>未把多条视觉反馈聚类成产品问题（如首页信息密度）</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>Coze commit：永久修复视频无法播放——数据库存 S3 key + API 自动解析签名 URL</li><li>Coze commit：重写版本比对逻辑——时间戳每次不同导致版本比对无效的问题被定位并修复</li></ol></td>
+          <td>反馈表内根因分析浅；未聚类成产品问题</td>
+          <td>增加「问题归因」列；把同类反馈聚类成产品问题再决策</td>
+        </tr>
+
+        <tr>
+          <td class="dim">3. 迭代优先级与决策<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 15</span></td>
+          <td class="score-cell"><div class="score-num">13<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/15</span></div><div class="score-bar"><i style="width:87%;"></i></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>每条反馈都有「是否解决」「解决人」，决策覆盖 50 条</li><li>3.0 优化分工明确（研发测试/功能优化/视觉排版/内容素材 四类）</li><li>Coze 对话体现「先核心功能（导航/视频/报名/管理台）再视觉」的顺序</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>反馈表未显式标 P0/P1/P2 优先级，决策依据未写明</li><li>视觉打磨投入过重（球体/雾感渐变迭代 40+ 次），挤占功能验证时间</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>反馈表「是否解决」列覆盖 50 条；PDF 头部 3.0 分工 4 类</li><li>Coze commit 序列 05-27 00:08~01:50 连续 40+ 次球体视觉迭代</li></ol></td>
+          <td>优先级未排序；视觉挤占功能验证</td>
+          <td>反馈表加「优先级」（P0/P1/P2）和「决策依据」（影响/频率/核心路径）</td>
+        </tr>
+
+        <tr>
+          <td class="dim">4. 迭代 PRD 修订质量<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 20</span></td>
+          <td class="score-cell"><div class="score-num">10<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/20</span></div><div class="score-bar"><i style="width:50%;background:var(--d);"></i></div></td>
+          <td class="g"><span class="tag tag-D">D</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>Coze 对话 290 次带截图提交证明规则变更真实发生（导航固定、中英文切换、人物故事全链路等），不属于「基本没有形成有效迭代 PRD」的情形</li><li>变更覆盖迭代 PRD 应检查的多个层面：需求范围（功能增删）、功能规则（人物故事全链路）、UI 交互（导航 fixed、筛选层级）均在 DEMO 侧落地</li><li>有 revert 和「撤回操作」记录，对规则变更审慎</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>迭代 PRD 作为 Week 3 必交材料未提供，「修订是否回写到正确章节、能否回溯到反馈编号」无从查证</li><li>材料缺失下无法验证「迭代 PRD 与 DEMO 相互一致」，只能按保守口径判档</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>材料核对：迭代 PRD 未作为附件提供（见材料核对节）</li><li>Coze commit：人物故事模块增删改查——数据库/API/管理台/前端全链路</li><li>Coze commit：全站布局从绝对定位优化为响应式 flex/grid；导航栏 fixed 定位</li></ol></td>
+          <td>必交材料缺失，修订质量无从验证：按缺失证据四分法谨慎降档（D 区间 8–11 取 10），不判 E——Coze 佐证变更真实发生，非「没有形成有效迭代 PRD」</td>
+          <td>把 Coze commit 中的规则变更整理成迭代 PRD 修订版：每条对应反馈编号、标注修订时间与原因，与 DEMO 对表</td>
+        </tr>
+
+        <tr>
+          <td class="dim">5. 实际迭代效果<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 20</span></td>
+          <td class="score-cell"><div class="score-num">16<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/20</span></div><div class="score-bar"><i style="width:80%;"></i></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>Coze 290 次 commit 全部带网页截图（05-25:13 / 05-26:74 / 05-27:139 / 05-28:64），Week 2 MVP → Week 3 的迭代效果可还原</li><li>核心反馈落地充分：导航固定、FAQ 换行、讲者头像跳转、世界地图、分类系统均有对应 commit</li><li>解决了部署后视频无法播放、CDN 缓存旧页面等生产级难题</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>当周「迭代版网页」线上版本已被覆盖，无法直接访问 Week 3 中间状态</li><li>约 12 条反馈「是否解决」列未明确标注，效果无法判定</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>290 次 version commit 全部带页面截图</li><li>commit：添加 5.10/5.12/5.19 历史版本静态快照存档</li></ol></td>
+          <td>当周线上版本被覆盖；12 条反馈效果未标</td>
+          <td>保留当周部署版本访问地址或快照；未标反馈补效果判定</td>
+        </tr>
+
+        <tr>
+          <td class="dim">6. 回归测试与反馈验证<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 10</span></td>
+          <td class="score-cell"><div class="score-num">8<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/10</span></div><div class="score-bar"><i style="width:80%;"></i></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>Timeline 5.27 明确「测试最新版本」，有系统验证节奏</li><li>Coze 对话有 HTTP 200 + 多页面覆盖验证（导航栏固定）</li><li>管理台反馈 3 记录「5.28 图片视频报名已测试正常」</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>多数「已解决」反馈仍缺「改前 vs 改后」对比记录</li><li>管理台反馈 7（double check）、8（回收站）是否解决未标</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>Coze commit：覆盖页面全部 HTTP 200 验证通过</li><li>PDF 管理台 3 记录「5.28 图片视频报名已测试正常」</li></ol></td>
+          <td>改前改后对比缺失；管理台反馈未闭环</td>
+          <td>每条「已解决」补「改了什么、怎么验证」；补管理台 7/8 闭环</td>
+        </tr>
+
+        <tr>
+          <td class="dim">7. 迭代 PRD 版本管理<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 5</span></td>
+          <td class="score-cell"><div class="score-num">4<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/5</span></div><div class="score-bar"><i style="width:80%;"></i></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>Coze 对话有历史版本静态快照存档（5.10/5.12/5.19），版本意识存在</li><li>有版本一致性校验机制（服务端版本常量 + 页面版本标记比对）</li><li>有 revert/撤回记录，且「临时切换历史版本供预览」流程清晰</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>快照是「事后存档」而非「迭代决策 → PRD 新版本」的即时版本记录，反馈表未标对应文档版本号</li><li>无「修订时间、修订内容、对应反馈编号」的文档级对应关系</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>Coze commit：添加/重新生成 5.10/5.12/5.19 历史版本快照</li><li>Coze commit：新建服务端版本常量做进程级版本一致性校验</li></ol></td>
+          <td>当周即时文档版本记录缺失</td>
+          <td>反馈表加「对应文档版本号」列；修订版标注版本号演进</td>
+        </tr>
+
+        <tr class="total-row">
+          <td>合计</td>
+          <td class="score-cell"><div class="score-num">78<span style="font-size:12px;font-weight:400;">/100</span></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td colspan="4">先判档后定分核对：14+13+13+10+16+8+4 = 78，与各维得分率一致</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="verdict-pass">
+  ✅ 达到提交标准，可正式提交
+  <div class="rule">判定规则：总分 ≥ 75 且无任何维度为 E 档。本卷总分 78 ≥ 75；最低档为「迭代 PRD 修订质量」D 档（必交材料缺失的谨慎降档，非产品行为缺陷，不计 E 档），判定通过。提交前建议优先完成「下一阶段 3 件事」第 1 件（迭代 PRD 修订版），它是本卷唯一 D 档的补证路径。</div>
+</div>
+
+<div class="maturity">
+  <b>阶段成熟度：</b>反馈收集与迭代执行两端都很扎实：50 条反馈来源真实、分工到人，290 次带截图提交让「反馈→产品迭代」链条可追溯，视频无法播放、CDN 缓存旧页面等生产级问题也在当周解决。断裂点在中间的文档环节——迭代 PRD 未提交，规则变更只存在于 Coze 提交记录，评审无法按文档验证「哪条反馈改了哪条规则」。属于「反馈质量 A、迭代执行 B、文档修订 D」的偏科状态，补一份对应反馈编号的修订版即可闭合。
+</div>
+
+<div class="cards">
+  <div class="card"><h3>最大亮点</h3><p>反馈收集系统真实且迭代全程可追溯：50 条反馈覆盖 4 类来源与全产品链路，290 次带截图提交让「改了什么、为什么改」有据可查，生产级难题（视频播放、CDN 缓存）当周解决。</p></div>
+  <div class="card"><h3>最大问题</h3><p>迭代 PRD 未提交，「反馈→正式文档修订」的映射断裂。规则变更大量存在于 Coze commit，但评审无法按文档逐条验证「这条反馈是否真的改进了规则」，这是本卷唯一 D 档的直接原因。</p></div>
+  <div class="card"><h3>最大工程风险</h3><p>过程证据依赖 Coze 对话而非正式文档：一旦项目失效或成员离开，迭代决策链随之丢失；当周迭代版本又被最新版覆盖，Week 2 → Week 3 的对比证据只剩 commit 截图与事后快照。</p></div>
+</div>
+
+<div class="section">
+  <h2>Week 3 反馈闭环统计</h2>
+  <div class="stat-grid">
+    <div class="stat"><div class="num">50</div><div class="label">收集有效反馈数量</div></div>
+    <div class="stat"><div class="num">40</div><div class="label">纳入迭代数量</div></div>
+    <div class="stat"><div class="num">37</div><div class="label">已完成验证数量</div></div>
+    <div class="stat"><div class="num">10</div><div class="label">未解决数量</div></div>
+    <div class="stat"><div class="num">92.5%</div><div class="label">用户反馈闭环率（37/40）</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>迭代 Diff 表（Week 2 → Week 3）</h2>
+  <div class="table-wrap">
+    <table class="diff-table">
+      <thead><tr><th style="width:170px">来源反馈/问题</th><th style="width:110px">迭代 PRD 变化</th><th>DEMO 是否落实（Coze commit 佐证）</th><th style="width:130px">是否验证</th></tr></thead>
+      <tbody>
+        <tr><td>反馈 6 人物故事易忽略</td><td>未提供</td><td>已落实：人物故事区开头加跳转按钮；讲者头像跳转详情；人物故事增删改查全链路（commit 27,38,52,142）</td><td>已验证</td></tr>
+        <tr><td>反馈 14 活动日程箭头入口难找</td><td>未提供</td><td>已落实：活动卡片整卡可点击（commit 13,85）</td><td>已验证</td></tr>
+        <tr><td>反馈 15 关于我们滑动卡顿</td><td>未提供</td><td>已落实：全面优化响应速度（commit 83）</td><td>部分验证</td></tr>
+        <tr><td>反馈 16 问答页换行符未生效</td><td>未提供</td><td>已落实：字面换行符渲染为真实换行（commit 19）</td><td>已验证</td></tr>
+        <tr><td>反馈 17 演讲视频筛选框遮挡</td><td>未提供</td><td>已落实：筛选下拉框层级修复（commit 25,86,87）</td><td>已验证</td></tr>
+        <tr><td>反馈 18 微信恶意利用提示</td><td>未提供</td><td>已落实：微信兼容性优化（commit 83）</td><td>部分验证</td></tr>
+        <tr><td>反馈 20 问答页打开跳底部</td><td>未提供</td><td>已落实：聊天滚动仅限容器（commit 20）</td><td>已验证</td></tr>
+        <tr><td>反馈 21 首页板块调整</td><td>未提供</td><td>已落实：首页 hero 重新设计 + 探索区重构（commit 88,89）</td><td>已验证</td></tr>
+        <tr><td>反馈 25 关于我们最后一句突兀</td><td>未提供</td><td>已落实：删除「会是你吗」CTA 版面（commit 44）</td><td>已验证</td></tr>
+        <tr><td>反馈 26 导航栏首行固定</td><td>未提供</td><td>已落实：导航栏 fixed 定位 + 主体区顶部留白（commit 21-24,38,39）</td><td>已验证（HTTP 200）</td></tr>
+        <tr><td>反馈 28 演讲视频页滑动</td><td>未提供</td><td>已落实：首屏布局优化 + 年份合集交互（commit 18,263）</td><td>已验证</td></tr>
+        <tr><td>反馈 33 中英文切换</td><td>未提供</td><td>已落实：分类弹窗 + 全站国际化（commit 246-248,280,290）</td><td>已验证（Week4 英文版渲染正常）</td></tr>
+        <tr><td>反馈 34 给参与者一封信</td><td>未提供</td><td>已落实：信件模块 + 客户方照片 + 多类型上传（commit 26,132）</td><td>已验证</td></tr>
+        <tr><td>反馈 35 创始人语录融合</td><td>未提供</td><td>已落实：反馈横向轮播（commit 58,116,177,208）</td><td>已验证</td></tr>
+        <tr><td>反馈 38 讲者头像入口</td><td>未提供</td><td>已落实：讲者头像弹窗（commit 27,142,143）</td><td>已验证</td></tr>
+        <tr><td>反馈 40 首页口号</td><td>未提供</td><td>已落实：hero 文案更新（commit 181,190）</td><td>已验证（Week4 英文版新文案）</td></tr>
+        <tr><td>管理台反馈 1 简历 word 查看</td><td>未提供</td><td>已落实：简历下载 + 上传校验（commit 65,66）</td><td>已验证</td></tr>
+        <tr><td>管理台反馈 3 编辑同步前端</td><td>未提供</td><td>已落实：前台图片视频加载修复（commit 80,81）</td><td>已验证（5.28 图片视频报名正常）</td></tr>
+        <tr><td>管理台反馈 4 内容管理图片/logo 编辑</td><td>未提供</td><td>已落实：内容管理可视化编辑 + 新增板块（commit 72,74）</td><td>已验证</td></tr>
+        <tr><td>管理台反馈 9 返回管理员界面</td><td>未提供</td><td>已落实：后台导航分离 + 退出登录（commit 258,259）</td><td>已验证</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13px;color:var(--text-secondary);margin-top:10px;">「迭代 PRD 变化」列 20 行均为「未提供」：规则变更以 Coze commit 为佐证落进了 DEMO，但文档侧映射缺失——本表即第 4 维「迭代 PRD 修订质量」判 D 的直接证据。</p>
+</div>
+
+<div class="section next">
+  <h2>四、下一阶段最优先改进的 3 件事</h2>
+  <ol>
+    <li><strong>补迭代 PRD 修订版</strong>：把 Coze commit 中的规则变更（导航固定、中英文切换、人物故事全链路、首页板块改版）整理成正式修订记录，每条对应反馈编号、标注修订时间和原因——这是本卷唯一 D 档的补证路径。</li>
+    <li><strong>建立「反馈→修订→产品→验证」四件套闭环</strong>：每条采纳反馈明确「改了哪条规则、对应产品哪部分、怎么验证、谁负责」，补齐管理台反馈 7（double check）、8（回收站）的闭环。</li>
+    <li><strong>保留当周迭代版本</strong>：未来迭代保留中间版本访问地址或快照，避免「迭代版被最新版覆盖」导致 Week 2 → Week 3 对比只能靠 commit 截图间接还原。</li>
+  </ol>
+</div>
+
+<div class="section">
+  <h2>五、口径演进对照（v1.3.0 原评 80 → v2.2.0 重评 78）</h2>
+  <div class="table-wrap">
+    <table class="diff-table">
+      <thead><tr><th style="width:150px">维度</th><th style="width:230px">v1.3.0（2026-08 原评 · 7 维）</th><th style="width:150px">v2.2.0 重评（7 维）</th><th>差异原因</th></tr></thead>
+      <tbody>
+        <tr><td>总分</td><td>80 / B</td><td><b>78 / B</b> <span class="same">↓2</span></td><td>扣分重心从「未回写正式文档」转为「必交材料缺失的谨慎降档」，非小组表现变化（同一批材料）。</td></tr>
+        <tr><td>迭代 PRD 修订质量</td><td>v1.3.0 维度名「PRD/UI/实现规则修订质量」12 / C：确认规则变更真实发生，扣「未回写为正式文档新版本」</td><td><b>10 / D</b></td><td>v2.2.0 将迭代 PRD 列为必交材料：本样本未提供，按缺失证据四分法谨慎降档；不判 E——Coze 提交记录佐证规则变更真实发生、DEMO 变化量大，非「基本没有形成有效迭代 PRD」。</td></tr>
+        <tr><td>第 7 维</td><td>版本管理与规则一致性 4 / B</td><td class="same">迭代 PRD 版本管理 4 / B</td><td>v2.2.0 维度名聚焦「迭代决策 → PRD 新版本 → 与 DEMO 一致」链条；档位与分数不变。</td></tr>
+        <tr><td>强项复现</td><td>用户反馈质量、实际迭代效果为强项</td><td class="same">14 / A、16 / B</td><td>反馈系统性与迭代落地两处强项在新口径下复现。</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

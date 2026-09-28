@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week4 产品交付与部署评价报告 · 示例小组</title>
+<style>
+:root {
+  --primary: #3b5bdb; --primary-light: #edf2ff; --bg: #f5f6fa; --card: #fff;
+  --text: #1f2430; --text-secondary: #5b6472; --border: #e4e7ee;
+  --a: #0ca678; --a-bg: #e6fcf5; --b: #3b82f6; --b-bg: #e7f1ff;
+  --c: #f59f00; --c-bg: #fff4e0; --d: #f76707; --d-bg: #ffe9dd; --e: #e03131; --e-bg: #ffe3e3;
+  --pros: #0ca678; --pros-bg: #e6fcf5; --cons: #e03131; --cons-bg: #fff0f0;
+  --warn: #f59f00; --warn-bg: #fff8e1; --warn-border: #f59f00;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.6; padding:32px 16px; }
+.container { max-width:1120px; margin:0 auto; }
+header { background:var(--card); border-radius:14px; padding:28px 32px; margin-bottom:20px; border:1px solid var(--border); }
+header h1 { font-size:22px; margin-bottom:16px; color:var(--primary); }
+.meta { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px 24px; font-size:14px; color:var(--text-secondary); }
+.meta span b { color:var(--text); font-weight:600; }
+.warn-box { background:var(--warn-bg); border-left:4px solid var(--warn-border); border-radius:8px; padding:14px 20px; margin-bottom:20px; font-size:14px; }
+.warn-box b { color:var(--warn); }
+.warn-box ul { margin-top:6px; padding-left:22px; font-size:13px; color:var(--text); }
+.warn-box li { margin-bottom:4px; }
+.score-card { background:var(--card); border-radius:14px; padding:24px 32px; margin-bottom:20px; border:1px solid var(--border); }
+.score-header h2 { font-size:17px; margin-bottom:14px; color:var(--primary); }
+.total-score { display:flex; align-items:center; gap:18px; flex-wrap:wrap; background:var(--primary-light); border-radius:12px; padding:16px 24px; margin-bottom:18px; }
+.total-score .big { font-size:40px; font-weight:800; color:var(--primary); }
+.total-score .big small { font-size:16px; font-weight:400; color:var(--text-secondary); }
+.total-score .grade-badge { display:inline-block; padding:4px 14px; border-radius:999px; font-size:14px; font-weight:700; background:var(--b-bg); color:var(--b); }
+.total-score .sub { font-size:13px; color:var(--text-secondary); margin-top:6px; }
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:13px; min-width:960px; }
+thead th { background:var(--primary-light); color:var(--primary); text-align:left; padding:10px 12px; font-weight:600; white-space:nowrap; border-bottom:2px solid var(--primary); }
+tbody td { padding:14px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+.dim { font-weight:600; white-space:nowrap; min-width:130px; }
+.score-cell { min-width:90px; }
+.score-num { font-weight:700; font-size:15px; text-align:center; }
+.score-bar { height:6px; background:#edf0f5; border-radius:3px; margin-top:6px; overflow:hidden; }
+.score-bar i { display:block; height:100%; border-radius:3px; background:var(--primary); }
+.g { white-space:nowrap; text-align:center; }
+.tag { display:inline-block; min-width:26px; text-align:center; padding:2px 8px; border-radius:6px; font-size:12px; font-weight:700; color:#fff; }
+.tag-A { background:var(--a); } .tag-B { background:var(--b); } .tag-C { background:var(--c); } .tag-D { background:var(--d); } .tag-E { background:var(--e); }
+.conclusion { min-width:320px; }
+.pros, .cons { padding:10px 12px; border-radius:8px; margin-bottom:8px; }
+.pros { background:var(--pros-bg); border-left:3px solid var(--pros); }
+.cons { background:var(--cons-bg); border-left:3px solid var(--cons); }
+.pros:last-child, .cons:last-child { margin-bottom:0; }
+.pros .t, .cons .t { font-weight:700; font-size:12px; margin-bottom:6px; }
+.pros .t { color:var(--pros); } .cons .t { color:var(--cons); }
+.pros ol, .cons ol, .evid { padding-left:18px; margin:0; }
+.pros li, .cons li, .evid li { font-size:12.5px; margin-bottom:4px; }
+.evid { color:var(--text-secondary); }
+.total-row td { padding:12px; font-weight:700; font-size:14px; background:var(--primary-light); border-top:2px solid var(--primary); }
+.verdict-pass { background:var(--a-bg); border:1.5px solid var(--a); color:var(--a); border-radius:10px; padding:14px 18px; margin-bottom:20px; font-size:15px; font-weight:700; }
+.verdict-pass .rule { font-weight:400; font-size:13px; color:var(--text); margin-top:4px; }
+.maturity { background:var(--card); border-left:4px solid var(--primary); border-radius:8px; padding:14px 20px; margin-bottom:20px; font-size:14px; }
+.maturity b { color:var(--primary); }
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-bottom:20px; }
+.card { background:var(--card); border-radius:12px; padding:20px; border:1px solid var(--border); }
+.card h3 { font-size:14px; margin-bottom:10px; }
+.card p { font-size:13px; color:var(--text-secondary); }
+.section { background:var(--card); border-radius:14px; padding:24px 32px; margin-bottom:20px; border:1px solid var(--border); }
+.section h2 { font-size:17px; margin-bottom:16px; color:var(--primary); }
+.section ul { margin-top:6px; padding-left:22px; font-size:13.5px; }
+.section ul li { margin-bottom:6px; }
+.next ol { padding-left:22px; }
+.next li { margin-bottom:8px; font-size:14px; }
+@media (max-width:768px) { .cards { grid-template-columns:1fr; } .total-score .big { font-size:30px; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Week 4 · 产品交付与部署评价报告</h1>
+  <div class="meta">
+    <span><b>评价对象</b>：示例小组 · 公益组织活动官网（官网项目）· 《产品说明书》</span>
+    <span><b>评价周次</b>：Week 4 · 产品交付与部署</span>
+    <span><b>批改人</b>：assignment-review skill v2.2.0（WorkBuddy Agent 执行 · 助教复核确认）</span>
+    <span><b>调用模式</b>：助教复核 · v2.2.0 口径样例（评分沿用原评，本卷补齐判定卡与时效标注）</span>
+    <span><b>评价材料</b>：产品说明书（docx，8 大章节）+ 前端地址（coze.site 域名）+ 管理台地址（/admin/dashboard）</span>
+    <span><b>评价规则</b>：weeks/week4.md v2.2.0 评分卡（6 维，先判档后定分）；提交标准 = Week4 总分 ≥ 75 且无 E 档（统一阈值，v2.5.0 起）</span>
+  </div>
+</header>
+
+<div class="warn-box">
+  <b>材料核对与口径说明</b>
+  <ul>
+    <li><b>已收到</b>：产品说明书（docx）✓；前端与管理台地址 ✓；运营账号由学员随作业提供 ✓。</li>
+    <li><b>证据时效</b>：实测证据取自原评价时点（2026-05）记录——当时前端与管理台均 HTTP 200。本次重评复访前端地址返回 HTTP 402（站点服务状态变化），本报告不据此修改产品维度评分，只在部署验证记录中如实标注，不臆测当前产品状态。</li>
+    <li><b>口径说明</b>：Week 4 评分卡自 v1.3.0 以来未变化，本卷总分与分维结论沿用原评（82 / B），按现行规则补齐提交判定卡、先判档后定分核对与迭代 PRD 相关标注。</li>
+  </ul>
+</div>
+
+<div class="score-card">
+  <div class="score-header"><h2>一、评分表</h2></div>
+  <div class="total-score">
+    <div class="big">82<small> / 100</small></div>
+    <div>
+      <span class="grade-badge">B 良好</span>
+      <div class="sub">六维合计 · 最低档 C（无 E 档）· ✅ 达到提交标准</div>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>评价维度</th><th>得分</th><th>档位</th><th>评价结论</th><th>证据</th><th>主要扣分原因</th><th>改进建议</th></tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td class="dim">1. 最终产品完成度与可用性<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 25</span></td>
+          <td class="score-cell"><div class="score-num">24<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/25</span></div><div class="score-bar"><i style="width:96%;"></i></div></td>
+          <td class="g"><span class="tag tag-A">A</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>核心功能完整：前端品牌展示/演讲视频/活动日程/常见问答/4 类报名；管理台数据总览/数据管理/零代码编辑/账号权限——全部跑通（原评价时点实测）</li><li>中英文国际化为产品亮点（说明书 3.0 版本重点突破卡点），实测可切换</li><li>视觉效果出色：球形照片墙、动态声波、滚动叙事、渐变配色</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>首次访问时主体内容加载较慢（原评价时点截图等待约 15 秒才完整渲染），可能存在动画/懒加载性能问题</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>产品说明书 3.1-3.2 平台功能介绍</li><li>前端实测截图（原评价时点：Hero 完整渲染、导航齐全）</li><li>管理台登录页实测正常</li></ol></td>
+          <td>首次加载性能轻微影响可用性</td>
+          <td>优化首屏加载（关键内容同步渲染、动画延后）</td>
+        </tr>
+
+        <tr>
+          <td class="dim">2. 部署有效性与可访问性<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 20</span></td>
+          <td class="score-cell"><div class="score-num">18<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/20</span></div><div class="score-bar"><i style="width:90%;"></i></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>前端 + 管理台在原评价时点均 HTTP 200 稳定可访问</li><li>部署采用 Coze 站点，3.0 版本完成了「测试部署版本的前后端联动」卡点解决</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>说明书 6.1 仅写「通过浏览器直接访问官方域名」，未明确点明「Coze 站点部署」这一发布方式</li><li>未写明「如何重新部署」的步骤（如重新触发站点发布的流程）</li><li>本次重评复访前端地址返回 HTTP 402，评审当前无法直接打开产品（按证据时效口径处理，见部署验证记录）</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>产品说明书 6.1 访问方式</li><li>实际 URL 含 coze.site 域名</li><li>过程记录提到「测试部署版本的前后端联动」（卡点二已解决）</li><li>本次重评复访记录：HTTP 402</li></ol></td>
+          <td>部署方式表述模糊；无重部署步骤；地址时效失效</td>
+          <td>在 6.1 明确「部署在 Coze 站点」并附项目链接；新增「重新部署步骤」小节</td>
+        </tr>
+
+        <tr>
+          <td class="dim">3. 交付完整性<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 20</span></td>
+          <td class="score-cell"><div class="score-num">15<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/20</span></div><div class="score-bar"><i style="width:75%;"></i></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>说明书覆盖 8 大章节：背景/最终交付/平台介绍/过程记录/复盘/访问/权限/运行环境/团队说明</li><li>过程记录详实（49 张表格），含 1.0→2.0→3.0 各阶段开发内容、卡点、解决方案</li><li>团队分工明确（6 人职责、各版本贡献）</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>没有独立的「交付清单」章节：访问地址、部署项目、数据表、工作流、知识库、API/插件依赖、配置项、账号清单、已知问题——散在过程记录里，未汇总成可勾选清单</li><li>管理后台账号仅随作业口头提供，未在说明书「账号清单」中正式记录</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>说明书缺独立「交付清单」章节</li><li>账号仅在随作业消息中提供，说明书 6.2 仅写「运营人员专属账号与密码登录」无具体值</li></ol></td>
+          <td>缺独立交付清单；账号未正式入册</td>
+          <td>新增「交付清单」章节逐条填写（地址、数据表、工作流、依赖、账号）；敏感信息以「需向作者索取」形式记录而非明文</td>
+        </tr>
+
+        <tr>
+          <td class="dim">4. 使用说明与接手友好度<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 15</span></td>
+          <td class="score-cell"><div class="score-num">13<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/15</span></div><div class="score-bar"><i style="width:87%;"></i></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>访问方式（6.1）、登录说明（6.2）、权限矩阵（7.1）、异常处理（6.2 忘记密码）、多端适配（8.1）都覆盖</li><li>权限划分清晰（普通运营/活动管理/超级管理员），7.2 还单独写了功能访问限制规则</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>缺「新手第一次操作完整流程」——管理员首次登录后该做什么、运营人员如何改首页/上传视频，没有分步指引</li><li>「如何使用后台编辑网站内容」（最常用功能）只在 3.2.3 用表格碎片化呈现，缺连贯操作路径</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>说明书 6.1-6.2 访问/登录</li><li>说明书 7 权限说明</li><li>说明书 3.2.3 后台功能（仅表格碎片化）</li></ol></td>
+          <td>缺新手操作完整流程；最常用功能缺连贯指引</td>
+          <td>补「新管理员 5 步上手」小节：登录→进入数据总览→编辑首页文案→上传演讲视频→查看报名数据</td>
+        </tr>
+
+        <tr>
+          <td class="dim">5. 部署后维护与故障处理<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 15</span></td>
+          <td class="score-cell"><div class="score-num">9<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/15</span></div><div class="score-bar"><i style="width:60%;"></i></div></td>
+          <td class="g"><span class="tag tag-C">C</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>过程记录提到两个卡点解决（图片上传预览、部署版本视频上传联动），留下了实战经验</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li><b>没有独立的「维护手册」章节</b>——常见故障排查（AI 失败先查什么、API 失效去哪换、Prompt 在哪调、工作流在哪维护、如何重新发布、如何回退）均未成文</li><li>过程记录里隐含的卡点解决方案按开发时间线叙事，不是按「故障现象→定位→解决」结构</li><li>一旦团队不在了，接手的人无法独立维护</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>说明书缺独立维护手册章节</li><li>过程记录有卡点但非故障应对结构</li></ol></td>
+          <td>维护手册整体缺失；故障应对无系统性</td>
+          <td>补「部署后维护手册」章节：常见故障速查表、AI 调用失败排查路径、Prompt/工作流修改位置、重新发布/回退步骤、视频地址失效解决方法</td>
+        </tr>
+
+        <tr>
+          <td class="dim">6. 已知问题与交付边界<br><span style="color:var(--text-secondary);font-weight:400;font-size:11px;">权重 5</span></td>
+          <td class="score-cell"><div class="score-num">3<span style="font-size:12px;color:var(--text-secondary);font-weight:400;">/5</span></div><div class="score-bar"><i style="width:60%;"></i></div></td>
+          <td class="g"><span class="tag tag-C">C</span></td>
+          <td class="conclusion">
+            <div class="pros"><div class="t">✓ 优点</div><ol><li>说明书 9.2 有简短的隐私政策说明（不向第三方泄露、不作他用）</li></ol></div>
+            <div class="cons"><div class="t">✗ 缺点</div><ol><li>没有独立的「已知问题与产品边界」章节：当前还做不了什么、哪些场景不稳定、依赖风险（外部接口变更、平台稳定性、AI 服务成本）、下一步值得优化什么均未成文</li></ol></div>
+          </td>
+          <td><ol class="evid"><li>说明书 9.2 隐私政策</li><li>缺独立已知问题章节</li></ol></td>
+          <td>边界认知不足；缺依赖风险说明</td>
+          <td>补「已知问题与产品边界」章节：当前未做功能、已知不稳定点（首屏加载）、依赖风险、下一阶段建议</td>
+        </tr>
+
+        <tr class="total-row">
+          <td>合计</td>
+          <td class="score-cell"><div class="score-num">82<span style="font-size:12px;font-weight:400;">/100</span></div></td>
+          <td class="g"><span class="tag tag-B">B</span></td>
+          <td colspan="4">先判档后定分核对：24+18+15+13+9+3 = 82，与各维得分率一致</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="verdict-pass">
+  ✅ 达到提交标准，可正式提交
+  <div class="rule">判定规则：Week4 总分 ≥ 75 且无任何维度为 E 档。本卷总分 82 ≥ 75，六维最低为 C 档，判定通过。本卷为最终交付评审：维护手册与已知问题章节虽缺（C 档），不触发 E 档拦截，但建议在结营前补齐——它们决定产品离开团队后能否活着。</div>
+</div>
+
+<div class="maturity">
+  <b>阶段成熟度：</b>产品本身已经做扎实并稳定可访问（原评价时点），前端功能完整、视觉效果出色、管理台零代码编辑可用，属于可交付状态。但说明书还停留在团队作品集和过程复盘层面，没有真正进入「给别人用」的产品文档——缺独立的交付清单、维护手册、已知问题三大交付资料。总体是产品 90 分、说明书 70 分。
+</div>
+
+<div class="cards">
+  <div class="card"><h3>最大亮点</h3><p>产品完成度过硬：核心功能齐全（前端 4 类报名 + 后台零代码编辑 + 中英文切换），视觉效果出色，3.0 版本解决了「中英文切换」「视频地址失效」「部署版本前后端联动」等关键技术卡点——这是真正能拿出去用的产品。</p></div>
+  <div class="card"><h3>最大问题</h3><p>说明书停留在「团队作品集」层面，没进入「产品文档」：缺独立的「交付清单」「维护手册」「已知问题与边界」三大交付资料——这是 Week 4 区别于前几周的关键卡点。产品做完了，但「交付」这件事没做完。</p></div>
+  <div class="card"><h3>最大工程风险</h3><p>维护手册缺失，下一个接手的人无法独立维护：故障排查、Prompt 与工作流的修改位置、重新发布/回退步骤，都「散落在团队成员的脑子里」或「在开发对话里」。一旦团队不在了，产品就会变成「孤儿」——本次重评站点已无法访问，恰是这种风险的写照。</p></div>
+</div>
+
+<div class="section">
+  <h2>部署真实性验证记录（原评价时点实测 + 本次重评复访）</h2>
+  <ul>
+    <li>前端地址 → 原评价时点 HTTP 200，加载完成后完整渲染（导航/中英文切换/Hero 区/照片球体/按钮）；<b>本次重评复访 HTTP 402</b>（站点服务状态变化，按证据时效口径处理，不据此改分）。</li>
+    <li>管理台地址（/admin/dashboard）→ 原评价时点 HTTP 200，登录页正常（用户名/密码/登录按钮/注册入口/「本系统仅限运营管理人员使用」）。</li>
+    <li>运营账号与密码由学员随作业提供，说明书 6.2 明确「运营人员专属账号与密码登录」。</li>
+    <li>部署方式：Coze 站点（coze.site 域名）。</li>
+  </ul>
+</div>
+
+<div class="section next">
+  <h2>四、下一阶段最优先改进的 3 件事</h2>
+  <ol>
+    <li><strong>补独立「交付清单」章节</strong>：访问地址、部署项目链接、数据表（四类报名 4 张）、工作流、知识库、API/插件依赖、配置项、账号清单（敏感信息不写明文）、已知问题链接。</li>
+    <li><strong>补独立「维护手册」章节</strong>：常见故障速查表、AI 失败排查路径、修改 Prompt/工作流的位置、重新发布/回退步骤、视频地址失效解决方法、首屏加载慢的优化点。</li>
+    <li><strong>补独立「已知问题与产品边界」章节</strong>：当前未做的功能、已知不稳定点（首屏加载）、依赖风险（部署平台/外部接口/AI 服务成本）、下一阶段建议。</li>
+  </ol>
+</div>
+
+</div>
+</body>
+</html>
